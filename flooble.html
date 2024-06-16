@@ -1,7 +1,7 @@
-
 class TimeFormat extends HTMLElement {
     render() {
-      let date = new Date(this.getAttribute('datetime') || Date.now());
+      let date = new Date(this.getAttribute('datetime')
+                  || Date.now());
       this.innerHTML = new Intl.DateTimeFormat("default", {
         year: this.getAttribute('year') || undefined,
         month: this.getAttribute('month') || undefined,
@@ -9,11 +9,14 @@ class TimeFormat extends HTMLElement {
         hour: this.getAttribute('hour') || undefined,
         minute: this.getAttribute('minute') || undefined,
         second: this.getAttribute('second') || undefined,
-        timeZoneName: this.getAttribute('time-zone-name') || undefined,
+        timeZoneName: this.getAttribute('time-zone-name')
+                   || undefined,
       }).format(date);
     }
     connectedCallback() {
       if (!this.rendered) {
+  
+  
         this.render();
         this.rendered = true;
       }
@@ -26,3 +29,16 @@ class TimeFormat extends HTMLElement {
       this.render();
     }
   }
+  customElements.define("time-format", TimeFormat);
+  The usage doesn't look much different from the first example.
+  <time-format id="elem"
+               hour="numeric"
+               minute="numeric"
+               second="numeric">
+  </time-format>
+  However, when you change one of the observed attributes in your code, the element re-renders automatically:
+  const elem = document.querySelector('time-format');
+  setInterval(
+    () => elem.setAttribute('datetime', new Date()),
+    1000
+  );
