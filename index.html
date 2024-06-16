@@ -4,38 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Basic Web Components</title>
-    <script>
-      class TimeFormat extends HTMLElement {
-        static get observedAttributes() {
-          return ['datetime','year','month','day','hour','minute','second','time-zone-name'];
-        }
-        connectedCallback() {
-          const datetime = this.getAttribute("datetime");
-          let date = new Date(datetime || Date.now());
-          this.innerHTML = new Intl.DateTimeFormat("default", {
-            year: this.getAttribute("year") || undefined,
-            month: this.getAttribute("month") || undefined,
-            day: this.getAttribute("day") || undefined,
-            hour: this.getAttribute("hour") || undefined,
-            minute: this.getAttribute("minute") || undefined,
-            second: this.getAttribute("second") || undefined,
-            timeZoneName: this.getAttribute("time-zone-name") || undefined,
-          }).format(date);
-        }
-      }
-    </script>
-    <style>
-      :not(:defined) {
-        display: block;
-        width: 150px;
-        border-bottom: 2px dotted red;
-        text-align: center;
-      }
-      :not(:defined)::before {
-        content: "unknown element";
-        color: red;
-      } 
-    </style>
+    <script src="index.js"></script>
+    <link rel="stylesheet" href="index.css">
   </head>
   <body>
     <template id="time-format">
@@ -56,26 +26,42 @@
 
     </div>
 
-    <button onclick="register()">Register</button>
-    <button onclick="unregister()">Unregister</button>
+    <button id="declare" onclick="declare()">Declare</button>
+    <button id="register" onclick="register()" disabled>Register</button>
+    <button id="unregister" onclick="unregister()" disabled>Unregister</button>
     <script>
       let clone;
       let wrapper;
 
     </script>
     <script>
-      const register = () => {
+      const declareButton = document.getElementById("declare");
+      const registerButton = document.getElementById("register");
+      const unregisterButton = document.getElementById("unregister");
+
+      const declare = () => {
         const template = document.getElementById("time-format");
         clone = template.content.cloneNode(true);
         wrapper = document.getElementById("time-format-wrapper");
         wrapper.appendChild(clone);
+        registerButton.disabled = false;
+        declareButton.disabled = true;
+      };
+
+      const register = () => {
         customElements.define("time-format", TimeFormat);
+        unregisterButton.disabled = false;
+        registerButton.disabled = true;
       };
 
       const unregister = () => {
         wrapper.innerHTML = "";
         clone = null;
         wrapper = null;
+        console.log("time-format is undefined");
+        registerButton.disabled = true;
+        declareButton.disabled = false;
+        unregisterButton.disabled = true;
       };
 
       console.log("time-format is NOT DEFINED");

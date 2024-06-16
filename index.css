@@ -1,0 +1,10 @@
+:not(:defined) {
+  display: block;
+  width: 150px;
+  border-bottom: 2px dotted red;
+  text-align: center;
+}
+:not(:defined)::before {
+  content: "unknown element";
+  color: red;
+}
