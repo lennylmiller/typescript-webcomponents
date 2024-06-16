@@ -23,23 +23,66 @@
           }).format(date);
         }
       }
-      customElements.define("time-format", TimeFormat);
     </script>
+    <style>
+      :not(:defined) {
+        display: block;
+        width: 150px;
+        border-bottom: 2px dotted red;
+        text-align: center;
+      }
+      :not(:defined)::before {
+        content: "unknown element";
+        color: red;
+      } 
+    </style>
   </head>
   <body>
-    <time-formart
-      datetime="2020-04-13"
-      year="numeric"
-      month="long"
-      day="numeric"
-      hour="numeric"
-      minute="numeric"
-      second="numeric"
-      time-zone-name="short"
-    >
-    </time-formart>
+    <template id="time-format">
+      <time-format
+        datetime="2020-04-13"
+        year="numeric"
+        month="long"
+        day="numeric"
+        hour="numeric"
+        minute="numeric"
+        second="numeric"
+        time-zone-name="short"
+      >
+      </time-format>
+    </template>
+
+    <div id="time-format-wrapper">
+
+    </div>
+
+    <button onclick="register()">Register</button>
+    <button onclick="unregister()">Unregister</button>
     <script>
-      console.log("Hello DOM");
+      let clone;
+      let wrapper;
+
+    </script>
+    <script>
+      const register = () => {
+        const template = document.getElementById("time-format");
+        clone = template.content.cloneNode(true);
+        wrapper = document.getElementById("time-format-wrapper");
+        wrapper.appendChild(clone);
+        customElements.define("time-format", TimeFormat);
+      };
+
+      const unregister = () => {
+        wrapper.innerHTML = "";
+        clone = null;
+        wrapper = null;
+      };
+
+      console.log("time-format is NOT DEFINED");
+      const name = customElements.get("time-format");
+      customElements.whenDefined("time-format").then(() => {
+        console.log("time-format is defined");
+      });
     </script>
   </body>
 </html>
