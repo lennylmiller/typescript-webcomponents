@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Basic Web Components</title>
     <script src="index.js"></script>
+    <script src="object.js"></script>
     <link rel="stylesheet" href="index.css">
   </head>
   <body>
@@ -25,7 +26,9 @@
     <div id="time-format-wrapper">
 
     </div>
-
+    <obj-element content="Default String Content"></obj-element>
+    <hr>
+    <button type="button" >Click to change content to object</button>
     <button onclick="register()">Register</button>
     <button onclick="unregister()">Unregister</button>
     <script>
@@ -53,11 +56,11 @@
       customElements.whenDefined("time-format").then(() => {
         console.log("time-format is defined");
         const elem = document.querySelector('time-format');
-          setInterval(
-            () => elem.setAttribute('datetime', new Date()),
-            1000
-          );
-        });
+        setInterval(
+          () => elem.setAttribute('datetime', new Date()),
+          1000
+        );
+      });
     </script>
   </body>
 </html>
